@@ -451,7 +451,7 @@
             font-family: monospace;
         }
 
-        .tool-input button, #browse-file-btn {
+        .tool-input button, #browse-file-btn, .download-link {
             display: inline-block;
             margin-top: 20px;
             padding: 10px 25px;
@@ -466,10 +466,16 @@
             box-shadow: 0 0 5px var(--color-accent-cyan);
         }
         
-        .tool-input button:hover, #browse-file-btn:hover {
+        .tool-input button:hover, #browse-file-btn:hover, .download-link:hover {
             opacity: 0.95;
             transform: scale(1.02);
             box-shadow: 0 0 15px var(--glow-shadow-hard);
+        }
+
+        /* Styling the anchor tag as a button */
+        .download-link {
+            text-decoration: none;
+            margin-top: 0; /* Adjust margin if needed */
         }
         
         /* --- Toast Notification Styles --- */
@@ -734,11 +740,20 @@
                         clearInterval(interval);
                         statusMessage.textContent = 'Processing Complete!';
                         showToast(`✅ ${fileName} is Ready for Download!`);
+                        
+                        // --- FIX APPLIED HERE ---
+                        const downloadFileName = `compressed-${fileName.replace(/\s/g, '_')}`;
                         modalBody.innerHTML += `
                             <div class="tool-output">
-                                <button class="cta-button" onclick="this.textContent='Downloading...'; showToast('Download initiated!')">Download Result</button>
+                                <a href="data:text/plain;charset=utf-8,This is a simulated compressed file for demonstration purposes." 
+                                   download="${downloadFileName}"
+                                   class="download-link">
+                                    Download Result (${downloadFileName})
+                                </a>
+                                <p style="margin-top: 10px; font-size: 0.8rem; color: #aaa;">(This is a placeholder file in this static demo.)</p>
                             </div>
                         `;
+                        // --- END FIX ---
                     }
                 }, 300);
             };
