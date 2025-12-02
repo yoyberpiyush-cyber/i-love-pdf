@@ -1,12 +1,3 @@
-I'd be happy to combine the HTML, CSS, and JavaScript into a single, comprehensive `index.html` file for easy deployment\!
-
-This structure keeps the UI, design, and interactive logic for the **Prompt Minds – Multi Tool Hub** in one place, using `<style>` and `<script>` tags, while maintaining the dark, futuristic, glowing theme and responsiveness you requested.
-
------
-
-## 📄 Single File `index.html` (All-in-One)
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,7 +16,8 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
             --text-primary: #ffffff;
             --text-secondary: #e0e0e0;
             --color-accent-cyan: #42f8f5;
-            --glow-shadow: rgba(66, 248, 245, 0.6);
+            --glow-shadow-soft: rgba(66, 248, 245, 0.4);
+            --glow-shadow-hard: rgba(66, 248, 245, 0.8); /* Harder glow */
             --bg-button: #12151a;
             --font-futuristic: 'Orbitron', sans-serif;
             --transition-speed: 0.3s;
@@ -59,8 +51,15 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
         
         /* --- Glow Text/Elements Mixin --- */
         .glow-text {
-            text-shadow: 0 0 5px var(--glow-shadow), 0 0 10px var(--glow-shadow);
+            text-shadow: 0 0 8px var(--glow-shadow-soft), 0 0 15px var(--glow-shadow-hard);
             color: var(--color-accent-cyan);
+        }
+
+        /* Pulsing animation for key elements (like the main logo) */
+        @keyframes neon-pulse {
+            0% { box-shadow: 0 0 5px var(--glow-shadow-soft); }
+            50% { box-shadow: 0 0 15px var(--glow-shadow-hard); }
+            100% { box-shadow: 0 0 5px var(--glow-shadow-soft); }
         }
         
         /* --- 1. Top Navbar (Header) --- */
@@ -70,10 +69,11 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
             position: sticky;
             top: 0;
             z-index: 1000;
+            border-bottom: 1px solid rgba(66, 248, 245, 0.1);
         }
         
         .logo-container {
@@ -86,10 +86,7 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
         .logo-icon {
             margin-right: 10px;
             font-size: 1.8rem;
-        }
-        
-        .nav-links {
-            display: flex;
+            animation: neon-pulse 4s infinite alternate; /* Applied neon pulse */
         }
         
         .nav-link {
@@ -104,12 +101,12 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
         .nav-link::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: -5px; /* Moved down for clearer separation */
             left: 50%;
             width: 0;
-            height: 2px;
+            height: 3px; /* Slightly thicker underline */
             background-color: var(--color-accent-cyan);
-            box-shadow: 0 0 8px var(--glow-shadow);
+            box-shadow: 0 0 10px var(--glow-shadow-hard);
             transition: width var(--transition-speed) ease-out, left var(--transition-speed) ease-out;
         }
         
@@ -126,10 +123,11 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
             display: none;
             background: none;
             border: none;
-            color: var(--text-primary);
-            font-size: 1.5rem;
+            color: var(--color-accent-cyan);
+            font-size: 1.8rem;
             cursor: pointer;
             padding: 5px;
+            text-shadow: 0 0 5px var(--glow-shadow-soft);
         }
         
         /* --- Main Layout Structure --- */
@@ -143,13 +141,14 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
             width: 280px;
             background-color: var(--bg-sidebar);
             padding: 20px 0;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.4);
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.7); /* Harder shadow */
             min-height: 100%;
             position: sticky;
-            top: 67px; /* Height of navbar */
+            top: 67px; 
             max-height: calc(100vh - 67px);
             overflow-y: auto;
             transition: transform var(--transition-speed) ease-in-out;
+            border-right: 1px solid rgba(66, 248, 245, 0.1);
         }
         
         .sidebar-header {
@@ -157,18 +156,19 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
             font-weight: 700;
             text-align: center;
             margin-bottom: 20px;
-            border-bottom: 1px solid rgba(66, 248, 245, 0.2);
+            border-bottom: 2px solid var(--color-accent-cyan); /* Stronger separator */
             padding-bottom: 10px;
             color: var(--color-accent-cyan);
-            text-shadow: 0 0 5px var(--glow-shadow);
+            text-shadow: 0 0 8px var(--glow-shadow-soft);
         }
         
         .tool-section h3 {
-            padding: 10px 20px;
-            font-size: 1rem;
+            padding: 12px 20px;
+            font-size: 1.1rem;
             cursor: pointer;
             color: var(--text-primary);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-transform: uppercase;
         }
         
         .tool-section ul {
@@ -180,80 +180,86 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
         }
         
         .tool-section li a {
-            display: block;
+            display: flex; /* Use flex for icon alignment */
+            align-items: center;
             padding: 10px 30px;
             color: var(--text-secondary);
-            transition: background-color var(--transition-speed), color var(--transition-speed), text-shadow var(--transition-speed);
+            transition: all var(--transition-speed);
+            font-size: 0.95rem;
         }
         
         .tool-section li a i {
             margin-right: 10px;
+            font-size: 1.1rem;
         }
         
         .tool-section li a:hover,
         .tool-section li a.active-tool {
-            background-color: rgba(66, 248, 245, 0.1);
+            background-color: rgba(66, 248, 245, 0.15); /* Slightly darker hover */
             color: var(--color-accent-cyan);
-            text-shadow: 0 0 5px var(--glow-shadow);
-            border-left: 4px solid var(--color-accent-cyan);
+            text-shadow: 0 0 5px var(--glow-shadow-soft);
+            border-left: 5px solid var(--color-accent-cyan); /* Thicker active bar */
         }
         
         
         /* --- 3. Main Content Area --- */
         .main-content {
             flex-grow: 1;
-            padding: 20px 40px;
+            padding: 30px 50px; /* Increased padding */
             max-width: calc(100% - 280px); 
         }
         
         /* Hero Section */
         .hero-section {
-            padding: 60px 0;
+            padding: 70px 0; /* More vertical space */
             text-align: center;
-            margin-bottom: 40px;
-            border-bottom: 1px solid rgba(66, 248, 245, 0.1);
+            margin-bottom: 50px;
+            border-bottom: 1px solid rgba(66, 248, 245, 0.15);
         }
         
         .hero-section h1 {
-            font-size: 3rem;
+            font-size: 3.5rem; /* Larger heading */
             font-weight: 900;
             margin-bottom: 15px;
             color: var(--color-accent-cyan);
-            text-shadow: 0 0 10px var(--glow-shadow);
+            text-shadow: 0 0 12px var(--glow-shadow-hard), 0 0 20px var(--glow-shadow-soft);
         }
         
         .hero-section p {
-            font-size: 1.2rem;
+            font-size: 1.3rem; /* Larger subheadline */
             color: var(--text-secondary);
             margin-bottom: 30px;
         }
         
         .cta-button {
             display: inline-block;
-            padding: 12px 30px;
+            padding: 14px 40px; /* Larger button */
             background-color: var(--bg-button);
             border: 2px solid var(--color-accent-cyan);
             color: var(--color-accent-cyan);
             font-weight: 700;
             border-radius: 5px;
-            transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+            transition: all var(--transition-speed);
             text-transform: uppercase;
+            box-shadow: 0 0 5px var(--glow-shadow-soft); /* Initial glow */
         }
         
         .cta-button:hover {
             background-color: var(--color-accent-cyan);
             color: var(--bg-main);
-            box-shadow: 0 0 15px var(--glow-shadow);
+            box-shadow: 0 0 20px var(--glow-shadow-hard); /* Intense hover glow */
+            transform: scale(1.05);
         }
         
         .section-heading {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             color: var(--text-primary);
-            border-bottom: 2px solid var(--color-accent-cyan);
+            border-bottom: 3px solid var(--color-accent-cyan);
             display: inline-block;
             padding-bottom: 5px;
+            text-shadow: 0 0 5px var(--glow-shadow-soft);
         }
         
         /* Tools Grid */
@@ -263,12 +269,13 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
             gap: 30px;
         }
         
+        /* Tool Card UI Update */
         .tool-card {
             background-color: var(--bg-sidebar);
             padding: 25px;
             border-radius: 10px;
-            border: 1px solid rgba(66, 248, 245, 0.1);
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(66, 248, 245, 0.2);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
             transition: transform var(--transition-speed), box-shadow var(--transition-speed);
             display: flex;
             flex-direction: column;
@@ -276,34 +283,36 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
         }
         
         .tool-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 15px var(--glow-shadow), 0 0 25px var(--glow-shadow);
+            transform: translateY(-8px); /* Deeper lift */
+            box-shadow: 0 0 20px var(--glow-shadow-hard), 0 0 35px var(--glow-shadow-soft); /* Intense neon hover */
         }
         
         .card-icon {
-            font-size: 2rem;
+            font-size: 2.5rem; /* Larger icon */
             color: var(--color-accent-cyan);
-            margin-bottom: 10px;
-            text-shadow: 0 0 5px var(--glow-shadow);
+            margin-bottom: 15px;
+            text-shadow: 0 0 8px var(--glow-shadow-hard);
         }
         
         .tool-card h3 {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            color: var(--text-primary);
+            color: var(--color-accent-cyan);
             margin-bottom: 10px;
+            text-transform: uppercase;
         }
         
         .tool-card p {
             color: var(--text-secondary);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
             flex-grow: 1;
         }
         
         .open-tool-btn {
             display: block;
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background-color: var(--bg-button);
             color: var(--color-accent-cyan);
             border: 1px solid var(--color-accent-cyan);
@@ -311,13 +320,13 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
             cursor: pointer;
             font-weight: 700;
             text-transform: uppercase;
-            transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+            transition: all var(--transition-speed);
         }
         
         .open-tool-btn:hover {
             background-color: var(--color-accent-cyan);
             color: var(--bg-main);
-            box-shadow: 0 0 10px var(--glow-shadow);
+            box-shadow: 0 0 15px var(--glow-shadow-hard);
         }
         
         /* --- 4. Footer --- */
@@ -325,21 +334,21 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
             background-color: var(--bg-navbar);
             padding: 20px 30px;
             text-align: center;
-            border-top: 2px solid var(--color-accent-cyan);
-            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
+            border-top: 3px solid var(--color-accent-cyan);
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.6);
             color: var(--text-secondary);
             margin-top: auto;
         }
         
         .footer-links a {
             color: var(--text-secondary);
-            margin: 0 10px;
+            margin: 0 12px;
             transition: color var(--transition-speed), text-shadow var(--transition-speed);
         }
         
         .footer-links a:hover {
             color: var(--color-accent-cyan);
-            text-shadow: 0 0 5px var(--glow-shadow);
+            text-shadow: 0 0 8px var(--glow-shadow-soft);
         }
         
         .social-icons {
@@ -347,15 +356,16 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
         }
         
         .social-icon {
-            font-size: 1.2rem;
-            margin: 0 10px;
+            font-size: 1.4rem;
+            margin: 0 12px;
             color: var(--text-secondary);
-            transition: color var(--transition-speed), text-shadow var(--transition-speed);
+            transition: color var(--transition-speed), transform var(--transition-speed);
         }
         
         .social-icon:hover {
             color: var(--color-accent-cyan);
-            text-shadow: 0 0 8px var(--glow-shadow);
+            text-shadow: 0 0 10px var(--glow-shadow-hard);
+            transform: scale(1.2);
         }
         
         /* --- Modal Styles --- */
@@ -368,92 +378,90 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
+            background-color: rgba(0, 0, 0, 0.9); /* Darker backdrop */
+            backdrop-filter: blur(8px); /* More blur */
             transition: opacity var(--transition-speed) ease;
         }
         
         .modal-content {
             background-color: var(--bg-sidebar);
-            margin: 10% auto;
-            padding: 30px;
-            border: 1px solid var(--color-accent-cyan);
-            width: 80%;
-            max-width: 700px;
-            border-radius: 10px;
-            box-shadow: 0 0 30px var(--glow-shadow);
+            margin: 8% auto; /* Move slightly higher */
+            padding: 40px;
+            border: 2px solid var(--color-accent-cyan);
+            width: 85%;
+            max-width: 750px;
+            border-radius: 15px;
+            box-shadow: 0 0 40px var(--glow-shadow-hard); /* Intense modal glow */
             position: relative;
             transform: scale(0.9);
             opacity: 0;
-            transition: transform var(--transition-speed) ease-out, opacity var(--transition-speed) ease-out;
+            transition: transform 0.4s ease-out, opacity 0.4s ease-out;
         }
         
-        .modal.active .modal-content {
-            transform: scale(1);
-            opacity: 1;
-        }
-        
-        .close-btn {
-            color: var(--color-accent-cyan);
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color var(--transition-speed);
-        }
-        
-        .close-btn:hover,
-        .close-btn:focus {
-            color: var(--text-primary);
-            text-decoration: none;
-        }
-        
-        /* Tool Specific UI */
+        /* Tool Specific UI - Enhanced for Console Look */
         .tool-input, .tool-output {
-            margin: 20px 0;
-            padding: 15px;
-            background-color: var(--bg-main);
-            border: 1px solid rgba(66, 248, 245, 0.3);
+            margin: 25px 0;
+            padding: 20px;
+            background-color: #080a0f; /* Even darker background */
+            border: 1px solid var(--color-accent-cyan);
             border-radius: 5px;
+        }
+
+        .tool-input p, .tool-output label {
+            font-weight: 700;
         }
         
         .tool-output {
             min-height: 50px;
-            font-family: monospace;
+            font-family: 'Consolas', monospace; /* Console font */
             color: var(--color-accent-cyan);
             word-break: break-all;
+            padding: 15px;
+            border-left: 5px solid var(--color-accent-cyan);
         }
         
         /* Input Fields and Buttons within Modal */
         .tool-input label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             color: var(--text-secondary);
+            font-size: 0.9rem;
         }
         
         .tool-input input[type="range"] {
             width: 100%;
             margin-top: 10px;
+            /* Custom range style for futuristic look (webkit/moz specific needed for full customization) */
         }
-        
-        .tool-input button {
-            margin-top: 15px;
-            padding: 10px 20px;
+
+        .tool-input input[type="checkbox"] {
+            transform: scale(1.2);
+            margin-right: 5px;
+            accent-color: var(--color-accent-cyan);
+        }
+
+        .tool-input button, #browse-file-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 25px;
             background-color: var(--color-accent-cyan);
             color: var(--bg-main);
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-weight: 700;
-            transition: opacity var(--transition-speed), transform var(--transition-speed);
+            text-transform: uppercase;
+            transition: all var(--transition-speed);
+            box-shadow: 0 0 5px var(--color-accent-cyan);
         }
         
-        .tool-input button:hover {
-            opacity: 0.9;
+        .tool-input button:hover, #browse-file-btn:hover {
+            opacity: 0.95;
             transform: scale(1.02);
+            box-shadow: 0 0 15px var(--glow-shadow-hard);
         }
         
-        /* Toast Notification Styles */
+        /* --- Toast Notification Styles --- */
         #toast-container {
             position: fixed;
             bottom: 20px;
@@ -468,123 +476,67 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
             margin-top: 10px;
             border-radius: 5px;
             border-left: 5px solid var(--color-accent-cyan);
-            box-shadow: 0 0 10px var(--glow-shadow);
+            box-shadow: 0 0 12px var(--glow-shadow-hard);
             opacity: 0;
             animation: fadein 0.5s forwards, fadeout 0.5s 4.5s forwards;
         }
         
-        @keyframes fadein {
-            from { bottom: 0; opacity: 0; }
-            to { bottom: 20px; opacity: 1; }
-        }
-        
-        @keyframes fadeout {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
         /* Processing UI styles */
         .processing-ui {
             text-align: center;
         }
         .progress-bar-container {
             width: 80%;
-            height: 10px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            margin: 15px auto;
+            height: 12px; /* Thicker bar */
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            margin: 20px auto;
             overflow: hidden;
+            box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.5);
         }
         .progress-bar {
             height: 100%;
             background-color: var(--color-accent-cyan);
-            box-shadow: 0 0 5px var(--glow-shadow);
+            box-shadow: 0 0 5px var(--glow-shadow-soft);
             transition: width 0.3s linear;
         }
         
         /* --- Responsive Design (Media Queries) --- */
-        /* Tablet (Max 1024px) */
         @media (max-width: 1024px) {
             .tools-grid {
                 grid-template-columns: repeat(2, 1fr); 
             }
-        
             .main-layout {
                 flex-direction: column;
             }
-        
             .sidebar {
                 width: 100%;
                 max-height: 50px;
-                overflow-y: hidden;
                 position: static;
-                box-shadow: none;
-                padding: 0;
             }
-        
-            .sidebar.active {
-                max-height: 400px; 
-            }
-        
-            .sidebar-header {
-                display: none;
-            }
-        
-            .tool-section h3 {
-                border-top: none;
-            }
-        
-            .tool-section ul {
-                display: none; 
-            }
-        
             .main-content {
-                max-width: 100%;
                 padding: 20px;
             }
-        
             .hero-section h1 {
-                font-size: 2.5rem;
+                font-size: 2.8rem;
             }
         }
         
-        /* Mobile (Max 768px) */
         @media (max-width: 768px) {
-            .navbar {
-                padding: 10px 20px;
-            }
-        
-            .nav-links {
-                display: none; 
-                position: absolute;
-                top: 67px;
-                left: 0;
-                right: 0;
-                background-color: var(--bg-navbar);
-                flex-direction: column;
-                text-align: center;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            }
-        
-            .nav-links.active {
-                display: flex;
-            }
-        
-            .hamburger-menu {
-                display: block;
-            }
-        
             .tools-grid {
                 grid-template-columns: 1fr; 
             }
-        
-            .hero-section h1 {
-                font-size: 2rem;
+            .hamburger-menu {
+                display: block;
             }
-        
-            .modal-content {
-                margin: 5% auto;
-                width: 95%;
+            .nav-links {
+                display: none; 
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .hero-section h1 {
+                font-size: 2.2rem;
             }
         }
     </style>
@@ -818,7 +770,7 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
                         <p class="glow-text">Drag & Drop your file here or Click to upload.</p>
                         <input type="file" id="file-upload" accept="*/*" style="display: none;">
                         <button id="browse-file-btn">Browse File</button>
-                        <div id="file-info" style="margin-top: 10px; color: var(--text-secondary);">No file selected.</div>
+                        <div id="file-info" style="margin-top: 15px; color: var(--text-secondary);">No file selected.</div>
                     </div>
                 `;
             };
@@ -826,21 +778,21 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
             const generatePasswordToolUI = () => {
                 return `
                     <div class="tool-input">
-                        <label for="password-length">Password Length: <span id="length-value">12</span></label>
+                        <label for="password-length">Password Length: <span id="length-value" class="glow-text">12</span></label>
                         <input type="range" id="password-length" min="8" max="64" value="12">
                         
-                        <div style="margin-top: 15px; display: flex; gap: 20px; flex-wrap: wrap;">
-                            <label><input type="checkbox" id="include-uppercase" checked> Uppercase</label>
-                            <label><input type="checkbox" id="include-lowercase" checked> Lowercase</label>
-                            <label><input type="checkbox" id="include-numbers" checked> Numbers</label>
-                            <label><input type="checkbox" id="include-symbols"> Symbols</label>
+                        <div style="margin-top: 25px; display: flex; gap: 30px; flex-wrap: wrap;">
+                            <label><input type="checkbox" id="include-uppercase" checked> Uppercase (A-Z)</label>
+                            <label><input type="checkbox" id="include-lowercase" checked> Lowercase (a-z)</label>
+                            <label><input type="checkbox" id="include-numbers" checked> Numbers (0-9)</label>
+                            <label><input type="checkbox" id="include-symbols"> Symbols (!@#$)</label>
                         </div>
 
                         <button id="generate-password-btn">Generate Password</button>
                     </div>
                     <div class="tool-output">
-                        <label for="generated-password">Generated Password:</label>
-                        <div id="generated-password" style="font-size: 1.2rem; min-height: 20px; cursor: pointer;" title="Click to copy">...</div>
+                        <label for="generated-password">Generated Password (Click to Copy):</label>
+                        <div id="generated-password" style="font-size: 1.4rem; min-height: 25px; cursor: pointer; padding: 5px 0;">...</div>
                     </div>
                 `;
             };
@@ -848,8 +800,8 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
             const generateSimpleToolUI = (toolName) => {
                 return `
                     <div class="tool-input">
-                        <p class="glow-text">Welcome to the ${toolName}!</p>
-                        <textarea id="simple-input" rows="5" placeholder="Enter text or value here..." style="width: 100%; padding: 10px; background: ${getComputedStyle(document.documentElement).getPropertyValue('--bg-main')}; color: ${getComputedStyle(document.documentElement).getPropertyValue('--text-primary')}; border: 1px solid ${getComputedStyle(document.documentElement).getPropertyValue('--color-accent-cyan')}50; border-radius: 5px;"></textarea>
+                        <p class="glow-text">Enter the required information for the ${toolName}:</p>
+                        <textarea id="simple-input" rows="5" placeholder="Enter text or value here..." style="width: 100%; padding: 15px; margin-top: 15px; background: #0d0f14; color: var(--color-accent-cyan); border: 1px solid var(--color-accent-cyan); border-radius: 5px; font-family: monospace;"></textarea>
                         <button id="process-simple-tool">Process</button>
                     </div>
                     <div class="tool-output">
@@ -901,14 +853,21 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
                                 return;
                             }
 
+                            // Simple frontend logic simulation
+                            if (toolId === 'word-counter') {
+                                const words = inputVal.trim().split(/\s+/).filter(Boolean).length;
+                                const chars = inputVal.length;
+                                outputDiv.innerHTML = `Words: <span class="glow-text">${words}</span>, Characters: <span class="glow-text">${chars}</span>`;
+                            } else {
+                                outputDiv.innerHTML = `[Processing simulated] Input length: <span class="glow-text">${inputVal.length}</span> characters.`;
+                            }
                             showToast(`Processing input for ${title}...`);
-                            outputDiv.textContent = `[Processing simulated] Input length: ${inputVal.length} characters.`;
                         });
                     }, 0);
                 }
                 else {
                     // Placeholder for complex/non-implemented tools
-                    content = `<p>The tool **${title}** requires complex backend processing or external libraries not permitted by the request. Displaying a simulated tool interface.</p>`;
+                    content = `<p class="glow-text">The tool **${title}** is currently in Beta. It requires a high-performance compute engine (backend) not available in this static demonstration. Displaying a simulated interface.</p>`;
                 }
 
                 modalTitle.textContent = title;
@@ -923,7 +882,7 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
                 setTimeout(() => {
                     modal.style.display = 'none';
                     modalBody.innerHTML = ''; 
-                }, 300); 
+                }, 400); // Increased timeout to match CSS transition
             };
 
             closeModal.addEventListener('click', closeToolModal);
@@ -983,7 +942,6 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
                     requiredChars.push(charSets.symbols[Math.floor(Math.random() * charSets.symbols.length)]);
                 }
 
-                // Handle case where no options are selected (should be caught before this, but safe guard)
                 if (allowedChars.length === 0) return 'Error: No options selected';
 
 
@@ -1026,6 +984,7 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
                 }
 
                 if (e.target.id === 'generated-password' && e.target.textContent.length > 3) {
+                    // Copy to clipboard
                     navigator.clipboard.writeText(e.target.textContent).then(() => {
                         showToast("Password copied to clipboard!");
                     }).catch(err => {
@@ -1044,4 +1003,3 @@ This structure keeps the UI, design, and interactive logic for the **Prompt Mind
     </script>
     </body>
 </html>
-```
