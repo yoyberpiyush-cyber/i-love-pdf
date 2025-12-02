@@ -1,0 +1,1047 @@
+I'd be happy to combine the HTML, CSS, and JavaScript into a single, comprehensive `index.html` file for easy deployment\!
+
+This structure keeps the UI, design, and interactive logic for the **Prompt Minds – Multi Tool Hub** in one place, using `<style>` and `<script>` tags, while maintaining the dark, futuristic, glowing theme and responsiveness you requested.
+
+-----
+
+## 📄 Single File `index.html` (All-in-One)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Minds – Multi Tool Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* --- CSS Variables and Global Styles --- */
+        :root {
+            --bg-main: #0d0f14;
+            --bg-navbar: #1c222d;
+            --bg-sidebar: #12151a;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --color-accent-cyan: #42f8f5;
+            --glow-shadow: rgba(66, 248, 245, 0.6);
+            --bg-button: #12151a;
+            --font-futuristic: 'Orbitron', sans-serif;
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: var(--font-futuristic);
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        a {
+            color: var(--color-accent-cyan);
+            text-decoration: none;
+            transition: color var(--transition-speed);
+        }
+        
+        a:hover {
+            color: var(--text-primary);
+        }
+        
+        /* --- Glow Text/Elements Mixin --- */
+        .glow-text {
+            text-shadow: 0 0 5px var(--glow-shadow), 0 0 10px var(--glow-shadow);
+            color: var(--color-accent-cyan);
+        }
+        
+        /* --- 1. Top Navbar (Header) --- */
+        .navbar {
+            background-color: var(--bg-navbar);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            font-weight: 900;
+            font-size: 1.5rem;
+        }
+        
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .nav-links {
+            display: flex;
+        }
+        
+        .nav-link {
+            margin-left: 30px;
+            font-weight: 700;
+            position: relative;
+            padding: 5px 0;
+            color: var(--text-secondary);
+            transition: var(--transition-speed);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: var(--color-accent-cyan);
+            box-shadow: 0 0 8px var(--glow-shadow);
+            transition: width var(--transition-speed) ease-out, left var(--transition-speed) ease-out;
+        }
+        
+        .nav-link:hover {
+            color: var(--color-accent-cyan);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+        
+        .hamburger-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        /* --- Main Layout Structure --- */
+        .main-layout {
+            display: flex;
+            flex: 1;
+        }
+        
+        /* --- 2. Left Side Vertical Sidebar --- */
+        .sidebar {
+            width: 280px;
+            background-color: var(--bg-sidebar);
+            padding: 20px 0;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.4);
+            min-height: 100%;
+            position: sticky;
+            top: 67px; /* Height of navbar */
+            max-height: calc(100vh - 67px);
+            overflow-y: auto;
+            transition: transform var(--transition-speed) ease-in-out;
+        }
+        
+        .sidebar-header {
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(66, 248, 245, 0.2);
+            padding-bottom: 10px;
+            color: var(--color-accent-cyan);
+            text-shadow: 0 0 5px var(--glow-shadow);
+        }
+        
+        .tool-section h3 {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            color: var(--text-primary);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .tool-section ul {
+            list-style: none;
+            padding: 0;
+            max-height: 500px; 
+            transition: max-height 0.5s ease-in-out;
+            overflow: hidden;
+        }
+        
+        .tool-section li a {
+            display: block;
+            padding: 10px 30px;
+            color: var(--text-secondary);
+            transition: background-color var(--transition-speed), color var(--transition-speed), text-shadow var(--transition-speed);
+        }
+        
+        .tool-section li a i {
+            margin-right: 10px;
+        }
+        
+        .tool-section li a:hover,
+        .tool-section li a.active-tool {
+            background-color: rgba(66, 248, 245, 0.1);
+            color: var(--color-accent-cyan);
+            text-shadow: 0 0 5px var(--glow-shadow);
+            border-left: 4px solid var(--color-accent-cyan);
+        }
+        
+        
+        /* --- 3. Main Content Area --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 20px 40px;
+            max-width: calc(100% - 280px); 
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            padding: 60px 0;
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(66, 248, 245, 0.1);
+        }
+        
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            color: var(--color-accent-cyan);
+            text-shadow: 0 0 10px var(--glow-shadow);
+        }
+        
+        .hero-section p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--bg-button);
+            border: 2px solid var(--color-accent-cyan);
+            color: var(--color-accent-cyan);
+            font-weight: 700;
+            border-radius: 5px;
+            transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+            text-transform: uppercase;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--color-accent-cyan);
+            color: var(--bg-main);
+            box-shadow: 0 0 15px var(--glow-shadow);
+        }
+        
+        .section-heading {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--color-accent-cyan);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+        
+        /* Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .tool-card {
+            background-color: var(--bg-sidebar);
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid rgba(66, 248, 245, 0.1);
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px var(--glow-shadow), 0 0 25px var(--glow-shadow);
+        }
+        
+        .card-icon {
+            font-size: 2rem;
+            color: var(--color-accent-cyan);
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px var(--glow-shadow);
+        }
+        
+        .tool-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        
+        .tool-card p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        
+        .open-tool-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: var(--bg-button);
+            color: var(--color-accent-cyan);
+            border: 1px solid var(--color-accent-cyan);
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+        }
+        
+        .open-tool-btn:hover {
+            background-color: var(--color-accent-cyan);
+            color: var(--bg-main);
+            box-shadow: 0 0 10px var(--glow-shadow);
+        }
+        
+        /* --- 4. Footer --- */
+        .footer {
+            background-color: var(--bg-navbar);
+            padding: 20px 30px;
+            text-align: center;
+            border-top: 2px solid var(--color-accent-cyan);
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.5);
+            color: var(--text-secondary);
+            margin-top: auto;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            margin: 0 10px;
+            transition: color var(--transition-speed), text-shadow var(--transition-speed);
+        }
+        
+        .footer-links a:hover {
+            color: var(--color-accent-cyan);
+            text-shadow: 0 0 5px var(--glow-shadow);
+        }
+        
+        .social-icons {
+            margin: 15px 0;
+        }
+        
+        .social-icon {
+            font-size: 1.2rem;
+            margin: 0 10px;
+            color: var(--text-secondary);
+            transition: color var(--transition-speed), text-shadow var(--transition-speed);
+        }
+        
+        .social-icon:hover {
+            color: var(--color-accent-cyan);
+            text-shadow: 0 0 8px var(--glow-shadow);
+        }
+        
+        /* --- Modal Styles --- */
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            transition: opacity var(--transition-speed) ease;
+        }
+        
+        .modal-content {
+            background-color: var(--bg-sidebar);
+            margin: 10% auto;
+            padding: 30px;
+            border: 1px solid var(--color-accent-cyan);
+            width: 80%;
+            max-width: 700px;
+            border-radius: 10px;
+            box-shadow: 0 0 30px var(--glow-shadow);
+            position: relative;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform var(--transition-speed) ease-out, opacity var(--transition-speed) ease-out;
+        }
+        
+        .modal.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .close-btn {
+            color: var(--color-accent-cyan);
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color var(--transition-speed);
+        }
+        
+        .close-btn:hover,
+        .close-btn:focus {
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        
+        /* Tool Specific UI */
+        .tool-input, .tool-output {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: var(--bg-main);
+            border: 1px solid rgba(66, 248, 245, 0.3);
+            border-radius: 5px;
+        }
+        
+        .tool-output {
+            min-height: 50px;
+            font-family: monospace;
+            color: var(--color-accent-cyan);
+            word-break: break-all;
+        }
+        
+        /* Input Fields and Buttons within Modal */
+        .tool-input label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+        }
+        
+        .tool-input input[type="range"] {
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .tool-input button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: var(--color-accent-cyan);
+            color: var(--bg-main);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: opacity var(--transition-speed), transform var(--transition-speed);
+        }
+        
+        .tool-input button:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+        
+        /* Toast Notification Styles */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 3000;
+        }
+        
+        .toast {
+            background-color: rgba(28, 34, 45, 0.95); 
+            color: var(--color-accent-cyan);
+            padding: 15px 20px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border-left: 5px solid var(--color-accent-cyan);
+            box-shadow: 0 0 10px var(--glow-shadow);
+            opacity: 0;
+            animation: fadein 0.5s forwards, fadeout 0.5s 4.5s forwards;
+        }
+        
+        @keyframes fadein {
+            from { bottom: 0; opacity: 0; }
+            to { bottom: 20px; opacity: 1; }
+        }
+        
+        @keyframes fadeout {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        /* Processing UI styles */
+        .processing-ui {
+            text-align: center;
+        }
+        .progress-bar-container {
+            width: 80%;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin: 15px auto;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: var(--color-accent-cyan);
+            box-shadow: 0 0 5px var(--glow-shadow);
+            transition: width 0.3s linear;
+        }
+        
+        /* --- Responsive Design (Media Queries) --- */
+        /* Tablet (Max 1024px) */
+        @media (max-width: 1024px) {
+            .tools-grid {
+                grid-template-columns: repeat(2, 1fr); 
+            }
+        
+            .main-layout {
+                flex-direction: column;
+            }
+        
+            .sidebar {
+                width: 100%;
+                max-height: 50px;
+                overflow-y: hidden;
+                position: static;
+                box-shadow: none;
+                padding: 0;
+            }
+        
+            .sidebar.active {
+                max-height: 400px; 
+            }
+        
+            .sidebar-header {
+                display: none;
+            }
+        
+            .tool-section h3 {
+                border-top: none;
+            }
+        
+            .tool-section ul {
+                display: none; 
+            }
+        
+            .main-content {
+                max-width: 100%;
+                padding: 20px;
+            }
+        
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+        }
+        
+        /* Mobile (Max 768px) */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 20px;
+            }
+        
+            .nav-links {
+                display: none; 
+                position: absolute;
+                top: 67px;
+                left: 0;
+                right: 0;
+                background-color: var(--bg-navbar);
+                flex-direction: column;
+                text-align: center;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            }
+        
+            .nav-links.active {
+                display: flex;
+            }
+        
+            .hamburger-menu {
+                display: block;
+            }
+        
+            .tools-grid {
+                grid-template-columns: 1fr; 
+            }
+        
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+        
+            .modal-content {
+                margin: 5% auto;
+                width: 95%;
+            }
+        }
+    </style>
+    </head>
+<body>
+
+    <header class="navbar">
+        <div class="logo-container">
+            <i class="fas fa-brain logo-icon glow-text"></i>
+            <span class="logo-text glow-text">Prompt Minds – Multi Tool Hub</span>
+        </div>
+        <nav class="nav-links">
+            <a href="#" class="nav-link">Home</a>
+            <a href="#tools" class="nav-link">Tools</a>
+            <a href="#" class="nav-link">About</a>
+            <a href="#" class="nav-link">Contact</a>
+        </nav>
+        <button class="hamburger-menu" aria-label="Toggle Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
+
+    <div class="main-layout">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">Tool Categories</div>
+            <div class="tool-section">
+                <h3><i class="fas fa-file-pdf"></i> PDF Tools</h3>
+                <ul>
+                    <li><a href="#" data-tool-id="merge-pdf"><i class="fas fa-link"></i> Merge PDF</a></li>
+                    <li><a href="#" data-tool-id="split-pdf"><i class="fas fa-cut"></i> Split PDF</a></li>
+                    <li><a href="#" data-tool-id="compress-pdf"><i class="fas fa-compress-alt"></i> Compress PDF</a></li>
+                    <li><a href="#" data-tool-id="pdf-to-word"><i class="fas fa-file-word"></i> PDF to Word</a></li>
+                    <li><a href="#" data-tool-id="word-to-pdf"><i class="fas fa-file-word"></i> Word to PDF</a></li>
+                    <li><a href="#" data-tool-id="pdf-to-jpg"><i class="fas fa-image"></i> PDF to JPG</a></li>
+                    <li><a href="#" data-tool-id="jpg-to-pdf"><i class="fas fa-file-image"></i> JPG to PDF</a></li>
+                    <li><a href="#" data-tool-id="unlock-pdf"><i class="fas fa-unlock"></i> Unlock PDF</a></li>
+                    <li><a href="#" data-tool-id="protect-pdf"><i class="fas fa-lock"></i> Protect PDF</a></li>
+                </ul>
+            </div>
+            <div class="tool-section">
+                <h3><i class="fas fa-toolbox"></i> Utility Tools</h3>
+                <ul>
+                    <li><a href="#" data-tool-id="image-compressor"><i class="fas fa-image"></i> Image Compressor</a></li>
+                    <li><a href="#" data-tool-id="qr-generator"><i class="fas fa-qrcode"></i> QR Code Generator</a></li>
+                    <li><a href="#" data-tool-id="password-generator" class="active-tool"><i class="fas fa-key"></i> Password Generator</a></li>
+                    <li><a href="#" data-tool-id="word-counter"><i class="fas fa-sort-numeric-up"></i> Word & Char Counter</a></li>
+                    <li><a href="#" data-tool-id="age-calculator"><i class="fas fa-calendar-alt"></i> Age Calculator</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <section class="hero-section">
+                <h1>Unlock the Future of Digital Tasks.</h1>
+                <p>30+ AI-Powered Tools, Zero Hassle. Instant results with our Multi Tool Hub.</p>
+                <a href="#tools" class="cta-button">Explore All Tools <i class="fas fa-chevron-right"></i></a>
+            </section>
+
+            <h2 id="tools" class="section-heading">Featured Tools Grid</h2>
+            
+            <section class="tools-grid">
+                
+                <div class="tool-card" data-tool-id="password-generator">
+                    <div class="card-icon"><i class="fas fa-key"></i></div>
+                    <h3>Password Generator</h3>
+                    <p>Create strong, complex passwords instantly and securely on the frontend.</p>
+                    <button class="open-tool-btn">Open Tool</button>
+                </div>
+                <div class="tool-card" data-tool-id="compress-pdf">
+                    <div class="card-icon"><i class="fas fa-compress-alt"></i></div>
+                    <h3>Compress PDF</h3>
+                    <p>Reduce the file size of your PDFs for easier sharing and faster uploads.</p>
+                    <button class="open-tool-btn">Open Tool</button>
+                </div>
+                <div class="tool-card" data-tool-id="image-converter">
+                    <div class="card-icon"><i class="fas fa-exchange-alt"></i></div>
+                    <h3>Image Converter</h3>
+                    <p>Convert JPG, PNG, and WEBP formats using browser-native APIs.</p>
+                    <button class="open-tool-btn">Open Tool</button>
+                </div>
+                <div class="tool-card" data-tool-id="qr-generator">
+                    <div class="card-icon"><i class="fas fa-qrcode"></i></div>
+                    <h3>QR Code Generator</h3>
+                    <p>Generate QR codes from any text or URL instantly.</p>
+                    <button class="open-tool-btn">Open Tool</button>
+                </div>
+                <div class="tool-card" data-tool-id="age-calculator">
+                    <div class="card-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <h3>Age Calculator</h3>
+                    <p>Determine the precise age or time difference between two dates.</p>
+                    <button class="open-tool-btn">Open Tool</button>
+                </div>
+                <div class="tool-card" data-tool-id="word-counter">
+                    <div class="card-icon"><i class="fas fa-sort-numeric-up"></i></div>
+                    <h3>Word & Char Counter</h3>
+                    <p>Real-time counting of words and characters in a block of text.</p>
+                    <button class="open-tool-btn">Open Tool</button>
+                </div>
+                
+            </section>
+
+        </main>
+    </div>
+
+    <div id="toolModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modal-title" class="glow-text">Tool Title</h2>
+            <div id="modal-body">
+                </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <span>|</span>
+            <a href="#">Terms</a>
+            <span>|</span>
+            <a href="#">Contact</a>
+        </div>
+        <div class="social-icons">
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter social-icon"></i></a>
+            <a href="#" aria-label="GitHub"><i class="fab fa-github social-icon"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in social-icon"></i></a>
+        </div>
+        <p>© 2025 Prompt Minds. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navbar = document.querySelector('.navbar');
+            const navLinks = document.querySelector('.nav-links');
+            const hamburger = document.querySelector('.hamburger-menu');
+            const sidebar = document.getElementById('sidebar');
+            const openToolButtons = document.querySelectorAll('.open-tool-btn, .sidebar a');
+            const modal = document.getElementById('toolModal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalBody = document.getElementById('modal-body');
+            const closeModal = document.querySelector('.close-btn');
+
+            // --- Utility Functions ---
+
+            /** Shows a futuristic toast notification. */
+            const showToast = (message) => {
+                const toastContainer = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.textContent = message;
+                toastContainer.appendChild(toast);
+
+                // Remove toast after animation
+                setTimeout(() => {
+                    toast.remove();
+                }, 5000);
+            };
+
+            /** Simulates file handling (Upload -> Process -> Done) */
+            const simulateFileProcessing = (fileName) => {
+                modalBody.innerHTML = `
+                    <div class="processing-ui">
+                        <p>Simulating processing for: <strong>${fileName}</strong></p>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: 0;"></div>
+                        </div>
+                        <p id="status-message" class="glow-text">Uploading...</p>
+                    </div>
+                `;
+                
+                const progressBar = modalBody.querySelector('.progress-bar');
+                const statusMessage = modalBody.querySelector('#status-message');
+                
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 10;
+                    progressBar.style.width = `${progress}%`;
+                    
+                    if (progress < 50) {
+                        statusMessage.textContent = 'Uploading...';
+                    } else if (progress < 90) {
+                        statusMessage.textContent = 'Processing...';
+                    } else if (progress >= 100) {
+                        clearInterval(interval);
+                        statusMessage.textContent = 'Processing Complete!';
+                        showToast(`✅ ${fileName} is Ready for Download!`);
+                        // Inject Download UI after simulation
+                        modalBody.innerHTML += `
+                            <div class="tool-output">
+                                <button class="cta-button" onclick="this.textContent='Downloading...'; showToast('Download initiated!')">Download Result</button>
+                            </div>
+                        `;
+                    }
+                }, 300);
+            };
+
+
+            // --- 1. Navbar & Responsiveness ---
+
+            // Toggle hamburger menu on mobile
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close hamburger menu when a link is clicked
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                    }
+                });
+            });
+
+            // --- 2. Sidebar Functionality (Collapsible for small screens) ---
+            document.querySelectorAll('.tool-section h3').forEach(heading => {
+                heading.addEventListener('click', () => {
+                    const ul = heading.nextElementSibling;
+                    if (window.innerWidth <= 1024) {
+                        ul.style.display = ul.style.display === 'block' ? 'none' : 'block';
+                    }
+                });
+            });
+
+            // --- 3. Modal and Tool Logic ---
+
+            // Tool UI Generators
+            const generateFileToolUI = (toolName) => {
+                return `
+                    <div class="tool-input">
+                        <p class="glow-text">Drag & Drop your file here or Click to upload.</p>
+                        <input type="file" id="file-upload" accept="*/*" style="display: none;">
+                        <button id="browse-file-btn">Browse File</button>
+                        <div id="file-info" style="margin-top: 10px; color: var(--text-secondary);">No file selected.</div>
+                    </div>
+                `;
+            };
+
+            const generatePasswordToolUI = () => {
+                return `
+                    <div class="tool-input">
+                        <label for="password-length">Password Length: <span id="length-value">12</span></label>
+                        <input type="range" id="password-length" min="8" max="64" value="12">
+                        
+                        <div style="margin-top: 15px; display: flex; gap: 20px; flex-wrap: wrap;">
+                            <label><input type="checkbox" id="include-uppercase" checked> Uppercase</label>
+                            <label><input type="checkbox" id="include-lowercase" checked> Lowercase</label>
+                            <label><input type="checkbox" id="include-numbers" checked> Numbers</label>
+                            <label><input type="checkbox" id="include-symbols"> Symbols</label>
+                        </div>
+
+                        <button id="generate-password-btn">Generate Password</button>
+                    </div>
+                    <div class="tool-output">
+                        <label for="generated-password">Generated Password:</label>
+                        <div id="generated-password" style="font-size: 1.2rem; min-height: 20px; cursor: pointer;" title="Click to copy">...</div>
+                    </div>
+                `;
+            };
+
+            const generateSimpleToolUI = (toolName) => {
+                return `
+                    <div class="tool-input">
+                        <p class="glow-text">Welcome to the ${toolName}!</p>
+                        <textarea id="simple-input" rows="5" placeholder="Enter text or value here..." style="width: 100%; padding: 10px; background: ${getComputedStyle(document.documentElement).getPropertyValue('--bg-main')}; color: ${getComputedStyle(document.documentElement).getPropertyValue('--text-primary')}; border: 1px solid ${getComputedStyle(document.documentElement).getPropertyValue('--color-accent-cyan')}50; border-radius: 5px;"></textarea>
+                        <button id="process-simple-tool">Process</button>
+                    </div>
+                    <div class="tool-output">
+                        <label>Output:</label>
+                        <div id="simple-output">Awaiting input...</div>
+                    </div>
+                `;
+            };
+
+            // Open Modal and Inject Tool Content
+            const openModal = (toolId) => {
+                let title = toolId.replace('-', ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                let content = '';
+
+                if (toolId === 'password-generator') {
+                    content = generatePasswordToolUI(); 
+                } else if (['compress-pdf', 'image-converter', 'pdf-to-word', 'jpg-to-pdf'].includes(toolId)) {
+                    // Simulated File Tools
+                    content = generateFileToolUI(title);
+                    
+                    // Add event listeners for file upload
+                    setTimeout(() => {
+                        const fileInput = document.getElementById('file-upload');
+                        const fileInfo = document.getElementById('file-info');
+                        const browseButton = document.getElementById('browse-file-btn');
+
+                        browseButton.onclick = () => fileInput.click();
+
+                        fileInput.onchange = (e) => {
+                            if (e.target.files.length > 0) {
+                                const fileName = e.target.files[0].name;
+                                fileInfo.textContent = `Selected: ${fileName}`;
+                                simulateFileProcessing(fileName);
+                            }
+                        };
+                    }, 0);
+
+                } else if (['word-counter', 'age-calculator', 'qr-generator'].includes(toolId)) {
+                    // Simple text-based utility tool placeholder
+                    content = generateSimpleToolUI(title);
+                    // Add basic processing simulation
+                    setTimeout(() => {
+                        document.getElementById('process-simple-tool').addEventListener('click', () => {
+                            const inputVal = document.getElementById('simple-input').value;
+                            const outputDiv = document.getElementById('simple-output');
+
+                            if (inputVal.trim() === '') {
+                                outputDiv.textContent = "Please enter some data to process.";
+                                return;
+                            }
+
+                            showToast(`Processing input for ${title}...`);
+                            outputDiv.textContent = `[Processing simulated] Input length: ${inputVal.length} characters.`;
+                        });
+                    }, 0);
+                }
+                else {
+                    // Placeholder for complex/non-implemented tools
+                    content = `<p>The tool **${title}** requires complex backend processing or external libraries not permitted by the request. Displaying a simulated tool interface.</p>`;
+                }
+
+                modalTitle.textContent = title;
+                modalBody.innerHTML = content;
+                modal.classList.add('active');
+                modal.style.display = 'block';
+            };
+
+            // Close Modal
+            const closeToolModal = () => {
+                modal.classList.remove('active');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    modalBody.innerHTML = ''; 
+                }, 300); 
+            };
+
+            closeModal.addEventListener('click', closeToolModal);
+            
+            // Close modal if user clicks outside of it
+            window.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeToolModal();
+                }
+            });
+
+            // Attach event listeners to all 'Open Tool' buttons and sidebar links
+            openToolButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const toolId = e.currentTarget.dataset.toolId || e.currentTarget.closest('.tool-card').dataset.toolId;
+                    if (toolId) {
+                        // Visually mark active sidebar link
+                        document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active-tool'));
+                        const activeLink = document.querySelector(`.sidebar a[data-tool-id="${toolId}"]`);
+                        if(activeLink) activeLink.classList.add('active-tool');
+                        
+                        openModal(toolId);
+                    }
+                });
+            });
+
+            // --- Password Generator Logic (Attached via delegation to modal) ---
+
+            /** Core Password Generation Logic */
+            const generatePassword = (length, upper, lower, numbers, symbols) => {
+                const charSets = {
+                    upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                    lower: 'abcdefghijklmnopqrstuvwxyz',
+                    numbers: '0123456789',
+                    symbols: '!@#$%^&*()_+~`|}{[]\:;?><,./-='
+                };
+
+                let allowedChars = '';
+                let password = '';
+                const requiredChars = [];
+
+                if (upper) {
+                    allowedChars += charSets.upper;
+                    requiredChars.push(charSets.upper[Math.floor(Math.random() * charSets.upper.length)]);
+                }
+                if (lower) {
+                    allowedChars += charSets.lower;
+                    requiredChars.push(charSets.lower[Math.floor(Math.random() * charSets.lower.length)]);
+                }
+                if (numbers) {
+                    allowedChars += charSets.numbers;
+                    requiredChars.push(charSets.numbers[Math.floor(Math.random() * charSets.numbers.length)]);
+                }
+                if (symbols) {
+                    allowedChars += charSets.symbols;
+                    requiredChars.push(charSets.symbols[Math.floor(Math.random() * charSets.symbols.length)]);
+                }
+
+                // Handle case where no options are selected (should be caught before this, but safe guard)
+                if (allowedChars.length === 0) return 'Error: No options selected';
+
+
+                // Fill the rest of the length
+                for (let i = requiredChars.length; i < length; i++) {
+                    const randomIndex = Math.floor(Math.random() * allowedChars.length);
+                    password += allowedChars[randomIndex];
+                }
+
+                // Combine required characters and generated characters, then shuffle
+                password = (password + requiredChars.join('')).split('');
+                
+                // Simple shuffle algorithm (Fisher-Yates)
+                for (let i = password.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [password[i], password[j]] = [password[j], password[i]];
+                }
+
+                return password.slice(0, length).join('');
+            };
+
+
+            // Attach logic to the Password Generator UI after it's injected
+            modal.addEventListener('click', (e) => {
+                if (e.target.id === 'generate-password-btn') {
+                    const length = parseInt(document.getElementById('password-length').value);
+                    const includeUpper = document.getElementById('include-uppercase').checked;
+                    const includeLower = document.getElementById('include-lowercase').checked;
+                    const includeNumbers = document.getElementById('include-numbers').checked;
+                    const includeSymbols = document.getElementById('include-symbols').checked;
+                    
+                    if (!includeUpper && !includeLower && !includeNumbers && !includeSymbols) {
+                        showToast("Error: Select at least one character type.");
+                        return;
+                    }
+
+                    const newPassword = generatePassword(length, includeUpper, includeLower, includeNumbers, includeSymbols);
+                    document.getElementById('generated-password').textContent = newPassword;
+                    showToast("Password generated successfully!");
+                }
+
+                if (e.target.id === 'generated-password' && e.target.textContent.length > 3) {
+                    navigator.clipboard.writeText(e.target.textContent).then(() => {
+                        showToast("Password copied to clipboard!");
+                    }).catch(err => {
+                        showToast("Could not copy password.");
+                        console.error('Could not copy text: ', err);
+                    });
+                }
+            });
+
+            modal.addEventListener('input', (e) => {
+                if (e.target.id === 'password-length') {
+                    document.getElementById('length-value').textContent = e.target.value;
+                }
+            });
+        });
+    </script>
+    </body>
+</html>
+```
